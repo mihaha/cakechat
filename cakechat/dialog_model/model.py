@@ -665,7 +665,7 @@ class CakeChatModel(object):
         laconic_logger.info('')
 
     def save_model(self, save_path):
-        ensure_dir(save_path)
+        ensure_dir(os.path.dirname(save_path))
         all_params = get_all_params(self._net['dist'])
         with open(save_path, 'wb') as f:
             params = {v.name: v.get_value() for v in all_params}
