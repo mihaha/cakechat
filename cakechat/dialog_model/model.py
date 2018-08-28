@@ -18,7 +18,7 @@ from cakechat.config import HIDDEN_LAYER_DIMENSION, GRAD_CLIP, LEARNING_RATE, \
     CONDITION_EMBEDDING_DIMENSION, NN_MODEL_PREFIX, BASE_CORPUS_NAME, INPUT_CONTEXT_SIZE, INPUT_SEQUENCE_LENGTH, \
     OUTPUT_SEQUENCE_LENGTH, NN_MODELS_DIR
 from cakechat.dialog_model.layers import RepeatLayer, NotEqualMaskLayer, SwitchLayer
-from cakechat.utils.files_utils import DummyFileResolver, FileNotFoundException
+from cakechat.utils.files_utils import DummyFileResolver, FileNotFoundException, ensure_dir
 from cakechat.utils.logger import get_logger, laconic_logger
 from cakechat.utils.text_processing import SPECIAL_TOKENS
 
@@ -665,6 +665,7 @@ class CakeChatModel(object):
         laconic_logger.info('')
 
     def save_model(self, save_path):
+        ensure_dir(save_path)
         all_params = get_all_params(self._net['dist'])
         with open(save_path, 'wb') as f:
             params = {v.name: v.get_value() for v in all_params}
